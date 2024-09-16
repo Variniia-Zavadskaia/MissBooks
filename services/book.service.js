@@ -11,7 +11,7 @@ export const bookService = {
     get,
     remove,
     save,
-    createBook,
+    // createBook,
     getEmptyBook,
     // getNextBookId,
     getDefaultFilter,
@@ -25,7 +25,7 @@ function query(filterBy = {}) {
             books = books.filter(book => regex.test(book.title))
         }
         if (filterBy.minPrice) {
-            books = books.filter(book => book.maxPrice >= filterBy.minPrice)
+            books = books.filter(book => book.listPrice.amount >= filterBy.minPrice)
         }
         return books
     })
@@ -76,43 +76,6 @@ function getDefaultFilter() {
 //     })
 // }
 
-// function _createBooks() {
-//     console.log('hghghg');
-
-//     let books = loadFromStorage(BOOK_KEY)
-//     if (!books || !books.length) {
-//         books = [
-//             {
-//                 id: 'OXeMG8wNskc',
-//                 title: 'metus hendrerit',
-//                 listPrice: {
-//                     amount: 109,
-//                     currencyCode: 'EUR',
-//                     isOnSale: false,
-//                 },
-//             },
-//             {
-//                 id: 'JYOJa2NpSCq',
-//                 title: 'morbi',
-//                 listPrice: {
-//                     amount: 44,
-//                     currencyCode: 'EUR',
-//                     isOnSale: true,
-//                 },
-//             },
-//             {
-//                 id: '1y0Oqts35DQ',
-//                 title: 'at viverra venenatis',
-//                 listPrice: {
-//                     amount: 108,
-//                     currencyCode: 'ILS',
-//                     isOnSale: false,
-//                 },
-//             },
-//         ]
-//         saveToStorage(BOOK_KEY, books)
-//     }
-// }
 
 function _createBooks() {
     let books = loadFromStorage(BOOK_KEY) || []

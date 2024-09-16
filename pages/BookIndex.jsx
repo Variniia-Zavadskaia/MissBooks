@@ -12,11 +12,11 @@ export function BookIndex() {
 
     useEffect(() => {
         loadBooks()
-    }, [])
+    }, [filterBy])
 
     function loadBooks() {
         bookService
-            .query()
+            .query(filterBy)
             .then(setBooks)
             .catch(err => {
                 console.log('Problems getting books:', err)
