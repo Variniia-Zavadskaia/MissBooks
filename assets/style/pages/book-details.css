@@ -14,7 +14,7 @@
 .book-details img {
     max-width: 200px;
     display: block;
-    margin: auto;
+    /* margin: auto; */
 }
 
 .price-red {
