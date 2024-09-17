@@ -16,3 +16,21 @@
     display: block;
     margin: auto;
 }
+
+.price-red {
+    color: red;
+}
+
+.price-green {
+    color: green;
+}
+
+.price-normal {
+    color: black; /* Default color */
+}
+
+.on-sale-sign {
+    color: red;
+    font-weight: bold;
+    font-size: 1.2em;
+}
