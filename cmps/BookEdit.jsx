@@ -3,11 +3,12 @@ const { useState, useEffect } = React
 import { bookService } from '../services/book.service.js'
 
 export function BookEdit() {
+    const[books, setBooks] = useState()
     const [bookToEdit, setBookToEdit] = useState(bookService.getEmptyBook())
 
     useEffect(() => {
-        setBookToEdit(bookToEdit)
-    }, [])
+        setBooks(bookToEdit)
+    }, [bookToEdit])
 
     function handleChange({ target }) {
         const field = target.name
@@ -27,15 +28,24 @@ export function BookEdit() {
         }
         console.log(value)
 
-        setBookToEdit(prevBook => ({ ...prevBook, [field]: value }))
+        if (field === 'listPrice') {
+            setBookToEdit(prevBook => ({
+                ...prevBook,
+                listPrice: { ...prevBook.listPrice, amount: value }
+            }))
+        } else {
+            setBookToEdit(prevBook => ({ ...prevBook, [field]: value }))
+        }
     }
 
-    function onAddBook(ev) {
+    function addBook(ev) {
+        console.log('new book');
+        
         ev.preventDefault()
         bookService
-            .save(this.bookToEdit)
+            .save(bookToEdit)
             .then(savedBook => {
-                setBookToEdit([...books, savedBook])
+                setBooks([...books, savedBook])
             })
             .catch(err => {
                 console.error('Failed to save book', err)
@@ -43,19 +53,21 @@ export function BookEdit() {
             })
     }
 
-    const { txt, listPrice } = bookToEdit
-    const isValid = txt
+    const { title, listPrice } = bookToEdit
+    const isValid = title
+
+    // const isValid = book.title && book.listPrice>= 0
 
     return (
         <section className="book-edit">
             {/* <h2>Add New Book</h2> */}
-            <form onSubmit={onAddBook}>
-                <label htmlFor="txt"></label>
-                <input value={txt} onChange={handleChange} type="text" name="title" id="title" placeholder="Title" />
+            <form onSubmit={addBook}>
+                {/* <label htmlFor="txt"></label> */}
+                <input value={title} onChange={handleChange} type="text" name="title" id="title" placeholder="Title" />
 
-                <label htmlFor="price"></label>
+                {/* <label htmlFor="price"></label> */}
                 <input
-                    value={listPrice}
+                    value={listPrice.amount || ''}
                     onChange={handleChange}
                     type="number"
                     name="listPrice"

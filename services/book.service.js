@@ -11,7 +11,7 @@ export const bookService = {
     get,
     remove,
     save,
-    // createBook,
+    createBook,
     getEmptyBook,
     // getNextBookId,
     getDefaultFilter,
