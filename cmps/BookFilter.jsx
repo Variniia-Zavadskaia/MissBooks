@@ -8,12 +8,12 @@ export function BookFilter({ filterBy, onSetFilterBy }) {
     }, [filterByToEdit])
 
     function handleChange({ target }) {
-        const field = target.name
+        const { name: field, type } = target
         console.log(target.name)
 
-        let value = target.value
+        let { value } = target
 
-        switch (target.type) {
+        switch (type) {
             case 'number':
             case 'range':
                 value = +value
@@ -33,20 +33,29 @@ export function BookFilter({ filterBy, onSetFilterBy }) {
         onSetFilterBy(filterByToEdit)
     }
 
-    const { txt, minPrice } = filterByToEdit
-    const isValid = txt
+    const { title, maxPrice, minPrice, category, isOnSale } = filterByToEdit
+
+    function isValidFilter() {
+        return (
+            title || 
+            category ||
+            typeof isOnSale === 'boolean' ||
+            (typeof maxPrice === 'number' && maxPrice >= 0) || 
+            (typeof minPrice === 'number' && minPrice >= 0)
+        )
+    }
 
     return (
         <section className="book-filter">
             <h2>Filter Our Books</h2>
             <form onSubmit={onSubmit}>
-                <label htmlFor="txt">Title</label>
-                <input value={txt} onChange={handleChange} type="text" name="txt" id="txt" />
+                <label htmlFor="title">Title</label>
+                <input value={title} onChange={handleChange} type="text" name="title" id="title" />
 
                 <label htmlFor="minPrice">Min Price</label>
                 <input value={minPrice || ''} onChange={handleChange} type="number" name="minPrice" id="minPrice" />
 
-                <button disabled={!isValid}>Submit</button>
+                <button type="submit" disabled={!isValidFilter()}>Submit</button>
             </form>
         </section>
     )

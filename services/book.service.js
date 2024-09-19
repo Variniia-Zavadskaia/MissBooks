@@ -1,7 +1,8 @@
-import { loadFromStorage, makeId, makeLorem, getRandomIntInclusive, saveToStorage } from '../services/util.service.js'
+import { loadFromStorage, makeId, makeLorem, getRandomIntInclusive, saveToStorage, DEFAULT_BOOK_IMG } from '../services/util.service.js'
 import { storageService } from '../services/async-storage.service.js'
 
 const BOOK_KEY = 'myBookDB'
+// const DEFAULT_BOOK_IMG = 'assets/img/defImg.jpeg'
 // var gFilterBy = { txt: '', minPrice: 0 }
 _createBooks()
 console.log(query())
@@ -20,14 +21,16 @@ export const bookService = {
 
 function query(filterBy = {}) {
     return storageService.query(BOOK_KEY).then(books => {
-        if (filterBy.txt) {
-            const regex = new RegExp(filterBy.txt, 'i')
-            books = books.filter(book => regex.test(book.title))
-        }
-        if (filterBy.minPrice) {
-            books = books.filter(book => book.listPrice.amount >= filterBy.minPrice)
-        }
+        books = _getFilteredBooks(books, filterBy)
         return books
+        // if (filterBy.txt) {
+        //     const regex = new RegExp(filterBy.txt, 'i')
+        //     books = books.filter(book => regex.test(book.title))
+        // }
+        // if (filterBy.minPrice) {
+        //     books = books.filter(book => book.listPrice.amount >= filterBy.minPrice)
+        // }
+        // return books
     })
 }
 
@@ -47,13 +50,34 @@ function save(book) {
     }
 }
 
+function _getFilteredBooks(books, filterBy) {
+    if (filterBy.title) {
+        const regExp = new RegExp(filterBy.title, 'i')
+        books = books.filter(book => regExp.test(book.title))
+    }
+    if (filterBy.maxPrice) {
+        books = books.filter(book => book.listPrice.amount <= filterBy.maxPrice)
+    }
+    if (filterBy.minPrice) {
+        books = books.filter(book => book.listPrice.amount >= filterBy.minPrice)
+    }
+    if (filterBy.category) {
+        books = books.filter(book => book.categories.includes(filterBy.category))
+    }
+    if (filterBy.isOnSale) {
+        books = books.filter(book => book.listPrice.isOnSale)
+    }
+
+    return books
+}
+
 function getEmptyBook(title = '', listPrice = '') {
     return { title, listPrice }
 }
 
 function getDefaultFilter() {
     return {
-        txt: '',
+        title: '',
         minPrice: '',
     }
 }
@@ -76,7 +100,6 @@ function getDefaultFilter() {
 //     })
 // }
 
-
 function _createBooks() {
     let books = loadFromStorage(BOOK_KEY) || []
     if (books && books.length) {
@@ -95,7 +118,7 @@ function _createBooks() {
             description: makeLorem(20),
             pageCount: getRandomIntInclusive(20, 600),
             categories: [ctgs[getRandomIntInclusive(0, ctgs.length - 1)]],
-            thumbnail: `http://coding-academy.org/books-photos/${i + 1}.jpg`,
+            thumbnail: `http://coding-academy.org/books-photos/${i + 1}.jpg` || DEFAULT_BOOK_IMG,
             language: 'en',
             listPrice: {
                 amount: getRandomIntInclusive(80, 500),
