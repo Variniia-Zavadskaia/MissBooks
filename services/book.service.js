@@ -3,7 +3,6 @@ import { storageService } from '../services/async-storage.service.js'
 
 const BOOK_KEY = 'myBookDB'
 // const DEFAULT_BOOK_IMG = 'assets/img/defImg.jpeg'
-// var gFilterBy = { txt: '', minPrice: 0 }
 _createBooks()
 console.log(query())
 
@@ -14,27 +13,20 @@ export const bookService = {
     save,
     createBook,
     getEmptyBook,
-    // getNextBookId,
-    getDefaultFilter,
-    // setFilterBy,
+    getDefaultFilter,   
 }
 
 function query(filterBy = {}) {
     return storageService.query(BOOK_KEY).then(books => {
         books = _getFilteredBooks(books, filterBy)
         return books
-        // if (filterBy.txt) {
-        //     const regex = new RegExp(filterBy.txt, 'i')
-        //     books = books.filter(book => regex.test(book.title))
-        // }
-        // if (filterBy.minPrice) {
-        //     books = books.filter(book => book.listPrice.amount >= filterBy.minPrice)
-        // }
-        // return books
     })
 }
 
 function get(bookId) {
+    console.log(bookId);
+    
+
     return storageService.get(BOOK_KEY, bookId)
 }
 
@@ -81,24 +73,6 @@ function getDefaultFilter() {
         minPrice: '',
     }
 }
-
-// function getFilterBy() {
-//     return { ...gFilterBy }
-// }
-
-// function setFilterBy(filterBy = {}) {
-//     if (filterBy.txt !== undefined) gFilterBy.txt = filterBy.txt
-//     if (filterBy.minPrice !== undefined) gFilterBy.minPrice = filterBy.minPrice
-//     return gFilterBy
-// }
-
-// function getNextBookId(bookId) {
-//     return storageService.query(BOOK_KEY).then(books => {
-//         let nextBookIdx = books.findIndex(book => book.id === bookId) + 1
-//         if (nextBookIdx === books.length) nextBookIdx = 0
-//         return books[nextBookIdx].id
-//     })
-// }
 
 function _createBooks() {
     let books = loadFromStorage(BOOK_KEY) || []

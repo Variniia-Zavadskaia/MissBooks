@@ -5,7 +5,7 @@
     z-index: 1;
 }
 
-.book-details {
+.book-edit {
     background-color: white;
     border-radius: 10px;
     padding: 30px;
@@ -21,10 +21,13 @@
     z-index: 2;
 }
 
-/* .watcher-details ul {
-    margin-block: 0 30px;
+.book-edit form {
+    display: grid;
+    grid-template-columns: 100px 200px;
+    gap: .5em;
 }
 
-.watcher-details li {
-    font-size: 1.3em;
-} */
+.form-actions{
+    display: flex;
+}
+

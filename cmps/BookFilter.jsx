@@ -37,10 +37,10 @@ export function BookFilter({ filterBy, onSetFilterBy }) {
 
     function isValidFilter() {
         return (
-            title || 
+            title ||
             category ||
             typeof isOnSale === 'boolean' ||
-            (typeof maxPrice === 'number' && maxPrice >= 0) || 
+            (typeof maxPrice === 'number' && maxPrice >= 0) ||
             (typeof minPrice === 'number' && minPrice >= 0)
         )
     }
@@ -52,10 +52,28 @@ export function BookFilter({ filterBy, onSetFilterBy }) {
                 <label htmlFor="title">Title</label>
                 <input value={title} onChange={handleChange} type="text" name="title" id="title" />
 
+                <label htmlFor="minPrice">Max Price</label>
+                <input value={maxPrice || ''} onChange={handleChange} type="number" name="maxPrice" id="maxPrice" />
+
                 <label htmlFor="minPrice">Min Price</label>
                 <input value={minPrice || ''} onChange={handleChange} type="number" name="minPrice" id="minPrice" />
 
-                <button type="submit" disabled={!isValidFilter()}>Submit</button>
+                <label htmlFor="category">Category: </label>
+                <select id="category" name="category" value={category} onChange={handleChange}>
+                    <option value="">Select Category</option>
+                    <option value="Computers">Computers</option>
+                    <option value="Fiction">Fiction</option>
+                    <option value="Love">Love</option>
+                    <option value="Poetry">Poetry</option>
+                    <option value="Religion">Religion</option>
+                </select>
+
+                <label htmlFor="isOnSale">On Sale: </label>
+                <input type="checkbox" id="isOnSale" name="isOnSale" checked={isOnSale} onChange={handleChange} />
+
+                <button type="submit" disabled={!isValidFilter()}>
+                    Submit
+                </button>
             </form>
         </section>
     )

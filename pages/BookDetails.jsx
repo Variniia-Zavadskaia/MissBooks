@@ -1,9 +1,11 @@
 const { useState, useEffect } = React
 
 import { bookService } from '../services/book.service.js'
+import { AppLoader } from '../cmps/AppLoader.jsx'
 
-export function BookDetails({ onBack, bookId }) {
+export function BookDetails({ onBack, bookId, onEdit }) {
     const [book, setBook] = useState(null)
+    const [features, setFeatures] = useState({ level: '', ageCategory: '', priceClass: '' })
 
     useEffect(() => {
         loadBook()
@@ -12,17 +14,32 @@ export function BookDetails({ onBack, bookId }) {
     function loadBook() {
         bookService
             .get(bookId)
-            .then(setBook)
+            .then(book => {
+                setBook(book)
+            })
             .catch(err => {
                 console.log('Problem getting book', err)
             })
     }
-   
-    const getReadingCategory = pageCount => {
+
+    useEffect(() => {
+        if (!book) return
+        const featuresFromBook = {
+            level: getReadingLevel(book.pageCount),
+            ageCategory: getBookAgeCategory(book.publishedDate),
+            priceClass: getPriceClass(book.listPrice.amount),
+        }
+
+        console.log(featuresFromBook)
+
+        setFeatures(prev => ({ ...prev, ...featuresFromBook }))
+    }, [book])
+
+    const getReadingLevel = pageCount => {
         if (pageCount > 500) return 'Serious Reading'
         if (pageCount > 200) return 'Decent Reading'
         if (pageCount < 100) return 'Light Reading'
-        return 'Moderate Reading' 
+        return 'Moderate Reading'
     }
 
     const getBookAgeCategory = publishedDate => {
@@ -32,41 +49,76 @@ export function BookDetails({ onBack, bookId }) {
 
         if (age > 10) return 'Vintage'
         if (age < 1) return 'New'
-        return 'Modern' 
+        return 'Modern'
     }
 
     const getPriceClass = amount => {
         if (amount > 150) return 'price-red'
         if (amount < 20) return 'price-green'
-        return 'price-normal' 
+        return 'price-normal'
     }
 
-    if (!book) return <div>Loading...</div>
+    function getCurrencySymbol(currencyCode) {
+        const currencySymbols = {
+            USD: '$',
+            EUR: '€',
+            ILS: '₪',
+            GBP: '£',
+            JPY: '¥',
+            AUD: 'A$',
+            CAD: 'C$',
+            CHF: 'Fr',
+            CNY: '¥',
+            SEK: 'kr',
+            NZD: 'NZ$',
+        }
+        return currencySymbols[currencyCode] || currencyCode // Fallback to currency code if symbol is not found
+    }
 
-    const { title, thumbnail, listPrice, pageCount, publishedDate } = book
-    const readingCategory = getReadingCategory(pageCount)
-    const bookAgeCategory = getBookAgeCategory(publishedDate)
-    const priceClass = getPriceClass(listPrice.amount)
+    if (!book) return <AppLoader />
 
-    if (!book) return <div>loading...</div>
+    // const { title, thumbnail, listPrice, pageCount, publishedDate } = book
+    // const readingCategory = getReadingCategory(pageCount)
+    // const bookAgeCategory = getBookAgeCategory(publishedDate)
+    // const priceClass = getPriceClass(listPrice.amount)
+
+    
     return (
         <section className="book-details">
-            <h1>Book title: {title}</h1>
-            <img src={`${thumbnail}`} />
-            <h3 className={priceClass}>
-                Price: {book.listPrice.amount} {book.listPrice.currencyCode}
-            </h3>
-            {book.listPrice.isOnSale && <p className="on-sale-sign">On Sale!</p>}
-            <p>
-                <strong>Page Count:</strong> {pageCount}
-            </p>
-            <p>
-                <strong>Category:</strong> {readingCategory}
-            </p>
-            <p>
-                <strong>Published:</strong> {bookAgeCategory}
-            </p>
-            <button onClick={onBack}>Back</button>
+            <div className="book-header">
+                <h2 className="book-title">{book.title}</h2>
+                {book.subtitle && <h3 className="book-subtitle">{book.subtitle}</h3>}
+                <img className="book-thumbnail" src={`${book.thumbnail} `} alt={`${book.title} cover`} />
+            </div>
+            <div className="book-info">
+                <p>
+                    <span className="bold">Authors:</span> {book.authors.join(', ')}
+                </p>
+                <p>
+                    <span className="bold">Published:</span> {book.publishedDate} {features.ageCategory}
+                </p>
+                <p>
+                    <span className="bold">Page Count:</span> {book.pageCount} {features.level}
+                </p>
+                <p>
+                    <span className="bold">Categories: </span>
+                    {book.categories.join(', ')}
+                </p>
+
+                {/* <LongTxt txt={book.description} />
+                <LongTxtCSS txt={book.description} length={50} /> */}
+            </div>
+            <div className={`book-price ${features.priceClass}`}>
+                <p>
+                    Price: {book.listPrice.amount} {getCurrencySymbol(book.listPrice.currencyCode)}
+                </p>
+                {book.isOnSale && <p className="on-sale">On Sale!</p>}
+            </div>
+
+            <div className="action-btns ">
+                <button onClick={onBack}>Back</button>
+                <button onClick={onEdit}>Edit</button>
+            </div>
         </section>
     )
 }
