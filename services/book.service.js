@@ -1,7 +1,7 @@
 import { loadFromStorage, makeId, makeLorem, getRandomIntInclusive, saveToStorage } from '../services/util.service.js'
 import { storageService } from '../services/async-storage.service.js'
 
-const BOOK_KEY = 'bookDB'
+const BOOK_KEY = 'myBookDB'
 // var gFilterBy = { txt: '', minPrice: 0 }
 _createBooks()
 console.log(query())

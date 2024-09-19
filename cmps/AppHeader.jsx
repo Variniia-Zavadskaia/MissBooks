@@ -9,22 +9,13 @@ export function AppHeader({ onSetPage }) {
             <section>
                 <h1>Miss Books</h1>
                 <nav className="app-nav">
-                    {/* {linkes.map((link, idx) => {
+                    {linkes.map((link, idx) => {
                         return (
-                            <a key={idx} onClick={()=>onSetPage(link.href)}>
+                            <a key={idx} title={link.title} onClick={() => onSetPage(link.href)}>
                                 {link.title}
                             </a>
                         )
-                    })} */}
-                    <a onClick={() => onSetPage('home')} href="#">
-                        Home
-                    </a>
-                    <a onClick={() => onSetPage('about')} href="#">
-                        About Us
-                    </a>
-                    <a onClick={() => onSetPage('book')} href="#">
-                        Books
-                    </a>
+                    })}
                 </nav>
             </section>
         </header>

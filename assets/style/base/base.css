@@ -27,6 +27,10 @@ p {
 a {
   text-decoration: none;
   color: unset;
+  cursor: pointer;
+  &:hover{
+    color: aquamarine;
+  }
 }
 
 
