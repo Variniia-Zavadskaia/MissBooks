@@ -1,10 +1,11 @@
 const { useState, useEffect } = React
 
 import { bookService } from '../services/book.service.js'
-import { BookDetails } from '../pages/BookDetails.jsx'
 import { BookList } from '../cmps/BookList.jsx'
+import { BookDetails } from '../pages/BookDetails.jsx'
 import { BookFilter } from '../cmps/BookFilter.jsx'
 import { BookEdit } from '../cmps/BookEdit.jsx'
+import { AppLoader } from '../cmps/AppLoader.jsx'
 
 export function BookIndex() {
     const [books, setBooks] = useState(null)
@@ -47,7 +48,7 @@ export function BookIndex() {
         setFilterBy({ ...filterBy })
     }
 
-    if (!books) return <h1>Loading...</h1>
+    if (!books) return <AppLoader />
     return (
         <section className="book-index">
             {selectedBookId ? (
