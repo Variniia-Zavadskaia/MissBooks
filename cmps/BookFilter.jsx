@@ -9,8 +9,8 @@ export function BookFilter({ filterBy, onSetFilterBy }) {
 
     function handleChange({ target }) {
         const field = target.name
-        console.log(target.name);
-        
+        console.log(target.name)
+
         let value = target.value
 
         switch (target.type) {
@@ -23,8 +23,8 @@ export function BookFilter({ filterBy, onSetFilterBy }) {
                 value = target.checked
                 break
         }
-        console.log(value);
-        
+        console.log(value)
+
         setFilterByToEdit(prevFilter => ({ ...prevFilter, [field]: value }))
     }
 

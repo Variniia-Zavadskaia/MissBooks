@@ -35,9 +35,9 @@ export function BookIndex() {
             })
     }
 
-    function onAddBook(params) {
-        
-    }
+    // function onAddBook(newBook) {
+    //     setBooks(addBook)
+    // }
 
     function onSelectedBookId(bookId) {
         setSelectedBookId(bookId)
@@ -55,7 +55,7 @@ export function BookIndex() {
             ) : (
                 <React.Fragment>
                     <BookFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
-                    <BookEdit/>
+                    <BookEdit />
                     <BookList books={books} onSelectedBookId={onSelectedBookId} onRemoveBook={onRemoveBook} />
                 </React.Fragment>
             )}

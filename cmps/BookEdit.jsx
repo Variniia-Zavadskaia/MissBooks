@@ -3,12 +3,12 @@ const { useState, useEffect } = React
 import { bookService } from '../services/book.service.js'
 
 export function BookEdit() {
-    const[books, setBooks] = useState()
+    const [books, setBooks] = useState()
     const [bookToEdit, setBookToEdit] = useState(bookService.getEmptyBook())
 
-    useEffect(() => {
-        setBooks(bookToEdit)
-    }, [bookToEdit])
+    // useEffect(() => {
+    //     setBooks(bookToEdit)
+    // }, [bookToEdit])
 
     function handleChange({ target }) {
         const field = target.name
@@ -31,7 +31,7 @@ export function BookEdit() {
         if (field === 'listPrice') {
             setBookToEdit(prevBook => ({
                 ...prevBook,
-                listPrice: { ...prevBook.listPrice, amount: value }
+                listPrice: { ...prevBook.listPrice, amount: value },
             }))
         } else {
             setBookToEdit(prevBook => ({ ...prevBook, [field]: value }))
@@ -39,8 +39,8 @@ export function BookEdit() {
     }
 
     function addBook(ev) {
-        console.log('new book');
-        
+        console.log('new book')
+
         ev.preventDefault()
         bookService
             .save(bookToEdit)
@@ -59,6 +59,8 @@ export function BookEdit() {
     // const isValid = book.title && book.listPrice>= 0
 
     return (
+        // <section onClick={onClose} className="backdrop">
+
         <section className="book-edit">
             {/* <h2>Add New Book</h2> */}
             <form onSubmit={addBook}>
@@ -78,5 +80,6 @@ export function BookEdit() {
                 <button disabled={!isValid}>Add book</button>
             </form>
         </section>
+        // </section>
     )
 }
