@@ -76,7 +76,7 @@ export function BookEdit({ bookId, onSaveBook, onBack }) {
     if (!bookToEdit) return <AppLoader />
 
     return (
-        <section onClick={onBack} className="backdrop">
+        <section className="backdrop">
             <section  onClick={evStop} className="book-edit">
                 <h2>Edit Book</h2>
                 <form onSubmit={onSubmit}>

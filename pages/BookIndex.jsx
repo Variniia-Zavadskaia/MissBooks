@@ -6,6 +6,7 @@ import { BookDetails } from '../pages/BookDetails.jsx'
 import { BookFilter } from '../cmps/BookFilter.jsx'
 import { BookEdit } from './BookEdit.jsx'
 import { AppLoader } from '../cmps/AppLoader.jsx'
+import { BookAdd } from '../cmps/BookAdd.jsx'
 
 export function BookIndex() {
     const [books, setBooks] = useState(null)
@@ -37,6 +38,21 @@ export function BookIndex() {
             })
     }
 
+    function onAddBook(bookToAdd) {
+        console.log('new book')
+
+        // ev.preventDefault()
+        bookService
+            .save(bookToAdd)
+            .then(savedBook => {
+                setBooks([savedBook, ...books])
+            })
+            .catch(err => {
+                console.error('Failed to save book', err)
+                // TODO: show error msg to user
+            })
+    }
+
     function onSaveBook(bookToSave) {
         bookService
             .save(bookToSave)
@@ -63,10 +79,12 @@ export function BookIndex() {
         <section className="book-index">
             {selectedBookId ? (
                 isEdit ? (
-                    <BookEdit 
-                        bookId={selectedBookId} 
-                        onSaveBook={onSaveBook} 
-                        onCancel={() => setIsEdit(false)} />
+                    <BookEdit
+                        bookId={selectedBookId}
+                        onSaveBook={onSaveBook}
+                        onBack={() => setSelectedBookId(null)}
+                        onCancel={() => setIsEdit(false)}
+                    />
                 ) : (
                     <BookDetails
                         bookId={selectedBookId}
@@ -77,6 +95,7 @@ export function BookIndex() {
             ) : (
                 <React.Fragment>
                     <BookFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
+                    <BookAdd onAddBook={onAddBook} />
                     <BookList books={books} onSelectedBookId={onSelectedBookId} onRemoveBook={onRemoveBook} />
                 </React.Fragment>
             )}
