@@ -46,6 +46,7 @@ export function BookIndex() {
             .save(bookToAdd)
             .then(savedBook => {
                 setBooks([savedBook, ...books])
+                setIsEdit(false)
             })
             .catch(err => {
                 console.error('Failed to save book', err)

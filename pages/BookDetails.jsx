@@ -2,6 +2,8 @@ const { useState, useEffect } = React
 
 import { bookService } from '../services/book.service.js'
 import { AppLoader } from '../cmps/AppLoader.jsx'
+import { LongTxt } from "../cmps/LongTxt.jsx"
+import { LongTxtCSS } from "../cmps/LongTxtCSS.jsx"
 
 export function BookDetails({ onBack, bookId, onEdit }) {
     const [book, setBook] = useState(null)
@@ -75,6 +77,10 @@ export function BookDetails({ onBack, bookId, onEdit }) {
         return currencySymbols[currencyCode] || currencyCode // Fallback to currency code if symbol is not found
     }
 
+    function getDefaultUrl(ev) {
+        ev.target.src = 'assets/img/defImg.jpeg'
+    }
+
     if (!book) return <AppLoader />
 
     // const { title, thumbnail, listPrice, pageCount, publishedDate } = book
@@ -88,7 +94,7 @@ export function BookDetails({ onBack, bookId, onEdit }) {
             <div className="book-header">
                 <h2 className="book-title">{book.title}</h2>
                 {book.subtitle && <h3 className="book-subtitle">{book.subtitle}</h3>}
-                <img className="book-thumbnail" src={`${book.thumbnail} `} alt={`${book.title} cover`} />
+                <img className="book-thumbnail" src={`${book.thumbnail} `} onError={getDefaultUrl} alt={`${book.title} cover`} />
             </div>
             <div className="book-info">
                 <p>
@@ -105,8 +111,8 @@ export function BookDetails({ onBack, bookId, onEdit }) {
                     {book.categories.join(', ')}
                 </p>
 
-                {/* <LongTxt txt={book.description} />
-                <LongTxtCSS txt={book.description} length={50} /> */}
+                <LongTxt txt={book.description} />
+                <LongTxtCSS txt={book.description} length={50} />
             </div>
             <div className={`book-price ${features.priceClass}`}>
                 <p>

@@ -1,10 +1,8 @@
-import { loadFromStorage, makeId, makeLorem, getRandomIntInclusive, saveToStorage, DEFAULT_BOOK_IMG } from '../services/util.service.js'
+import { loadFromStorage, makeId, makeLorem, getRandomIntInclusive, saveToStorage} from '../services/util.service.js'
 import { storageService } from '../services/async-storage.service.js'
 
 const BOOK_KEY = 'myBookDB'
-// const DEFAULT_BOOK_IMG = 'assets/img/defImg.jpeg'
 _createBooks()
-console.log(query())
 
 export const bookService = {
     query,
@@ -63,9 +61,9 @@ function _getFilteredBooks(books, filterBy) {
     return books
 }
 
-function getEmptyBook(title = '', listPrice = '') {
-    return { title, listPrice }
-}
+// function getEmptyBook(title = '', listPrice = '') {
+//     return {id: '', title, listPrice }
+// }
 
 function getDefaultFilter() {
     return {
@@ -92,7 +90,7 @@ function _createBooks() {
             description: makeLorem(20),
             pageCount: getRandomIntInclusive(20, 600),
             categories: [ctgs[getRandomIntInclusive(0, ctgs.length - 1)]],
-            thumbnail: `http://coding-academy.org/books-photos/${i + 1}.jpg` || DEFAULT_BOOK_IMG,
+            thumbnail: `http://coding-academy.org/books-photos/${i + 1}.jpg`,
             language: 'en',
             listPrice: {
                 amount: getRandomIntInclusive(80, 500),
@@ -106,7 +104,34 @@ function _createBooks() {
     console.log('books', books)
 }
 
-function createBook(title, listPrice) {
-    const book = getEmptyBook(title, listPrice)
+// function createBook(title, listPrice) {
+//     const book = getEmptyBook(title, listPrice)
+//     book.id = makeId()
+//     return book
+// }
+
+function createBook(title, amount = 100, currencyCode = 'EUR', isOnSale = false) {
+    const book = getEmptyBook(title, {
+        amount,
+        currencyCode,
+        isOnSale,
+    })
+    book.id = makeId()
     return book
+}
+
+function getEmptyBook(title = '', listPrice = { amount: 0, currencyCode: 'EUR', isOnSale: false }) {
+    return {
+        id: '',
+        title,
+        subtitle: '',
+        authors: [],
+        publishedDate: '',
+        description: '',
+        pageCount: 0,
+        categories: [],
+        thumbnail: '',
+        language: 'en',
+        listPrice,
+    }
 }

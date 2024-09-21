@@ -14,3 +14,7 @@
 .book-preview img {
     max-width: 100px;
 }
+
+p {
+    margin-top: 10px;
+}

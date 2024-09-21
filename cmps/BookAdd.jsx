@@ -4,10 +4,7 @@ import { bookService } from '../services/book.service.js'
 
 export function BookAdd({onAddBook}) {
     
-    const [bookToAdd, setBookToAdd] = useState({
-        title: '',
-        listPrice: { amount: 0 },
-      })
+    const [bookToAdd, setBookToAdd] = useState(bookService.getEmptyBook())
 
     function handleChange({ target }) {
         const field = target.name

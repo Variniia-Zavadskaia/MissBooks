@@ -47,4 +47,4 @@ export function getMonthName(date) {
     ]
     return monthNames[date.getMonth()]
 }
-export const DEFAULT_BOOK_IMG = 'assets/img/defImg.jpeg'
+
