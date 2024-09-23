@@ -9,7 +9,7 @@ export const bookService = {
     get,
     remove,
     save,
-    // createBook,
+    createBook,
     getEmptyBook,
     getDefaultFilter,
 }
@@ -59,7 +59,7 @@ function _getFilteredBooks(books, filterBy) {
 }
 
 // function getEmptyBook(title = '', listPrice = '') {
-//     return {id: '', title, listPrice }
+//     return {title, listPrice }
 // }
 
 function getDefaultFilter() {
@@ -138,8 +138,8 @@ function _setNextPrevBookId(book) {
         const bookIdx = books.findIndex(currBook => currBook.id === book.id)
         const nextBook = books[bookIdx + 1] ? books[bookIdx + 1] : books[0]
         const prevBook = books[bookIdx - 1] ? books[bookIdx - 1] : books[books.length - 1]
-        car.nextBookId = nextBook.id
-        car.prevBookId = prevBook.id
+        book.nextBookId = nextBook.id
+        book.prevBookId = prevBook.id
         return book
     })
 }

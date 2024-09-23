@@ -84,28 +84,29 @@ export function BookIndex() {
                 <Link to="/book/edit">Add Book</Link>
             </section>
             <BookList books={books} onRemoveBook={onRemoveBook} />
-            {/* {selectedBookId ? (
-                isEdit ? (
-                    <BookEdit
-                        bookId={selectedBookId}
-                        onSaveBook={onSaveBook}
-                        onBack={() => setSelectedBookId(null)}
-                        onCancel={() => setIsEdit(false)}
-                    />
-                ) : (
-                    <BookDetails
-                        bookId={selectedBookId}
-                        onBack={() => setSelectedBookId(null)}
-                        onEdit={() => setIsEdit(true)}
-                    />
-                )
-            ) : (
-                <React.Fragment>
-                    <BookFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
-                    <BookAdd onAddBook={onAddBook} />
-                    <BookList books={books} onSelectedBookId={onSelectedBookId} onRemoveBook={onRemoveBook} />
-                </React.Fragment>
-            )} */}
         </section>
     )
 }
+
+{/* {selectedBookId ? (
+    isEdit ? (
+        <BookEdit
+            bookId={selectedBookId}
+            onSaveBook={onSaveBook}
+            onBack={() => setSelectedBookId(null)}
+            onCancel={() => setIsEdit(false)}
+        />
+    ) : (
+        <BookDetails
+            bookId={selectedBookId}
+            onBack={() => setSelectedBookId(null)}
+            onEdit={() => setIsEdit(true)}
+        />
+    )
+) : (
+    <React.Fragment>
+        <BookFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
+        <BookAdd onAddBook={onAddBook} />
+        <BookList books={books} onSelectedBookId={onSelectedBookId} onRemoveBook={onRemoveBook} />
+    </React.Fragment>
+)} */}

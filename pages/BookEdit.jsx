@@ -2,7 +2,7 @@ const { useNavigate, useParams } = ReactRouterDOM
 const { useState, useEffect } = React
 
 import { bookService } from '../services/book.service.js'
-import { AppLoader } from './AppLoader.jsx'
+// import { AppLoader } from './AppLoader.jsx'
 
 export function BookEdit() {
     // const [bookToEdit, setBookToEdit] = useState(null)
@@ -28,8 +28,8 @@ export function BookEdit() {
     }
 
     function handleChange({ target }) {
-        const { name: field, type } = target
-        let { value } = target
+        const field = target.name
+        let value = target.value
 
         switch (type) {
             case 'number':
@@ -87,8 +87,17 @@ export function BookEdit() {
                 navigate('/book')
             })
     }
-    const { title, listPrice, description, authors, publishedDate, categories, isOnSale } = bookToEdit
-    if (!bookToEdit) return <AppLoader />
+    // const { title, listPrice, description, authors, publishedDate, categories, isOnSale } = bookToEdit
+     const { title, listPrice} = bookToEdit
+    // function isValidFilter() {
+    //     return (
+    //         title ||
+    //         categories ||
+    //         typeof isOnSale === 'boolean' ||
+    //         (typeof listPrice.amount === 'number' && listPrice.amount >= 0)
+    //     )
+    // }
+    // if (!bookToEdit) return <AppLoader />
 
     return (
         <section className="backdrop">
@@ -96,19 +105,18 @@ export function BookEdit() {
                 <h1>{bookToEdit.id ? 'Edit' : 'Add'} Book</h1>
                 <form onSubmit={onSaveBook}>
                     <label htmlFor="title">Title:</label>
-                    <input type="text" id="title" name="title" value={title} onChange={handleChange} required />
+                    <input type="text" id="title" name="title" value={title} onChange={handleChange} />
 
                     <label htmlFor="price">Price:</label>
                     <input
                         type="number"
                         id="price"
-                        name="listPrice.amount"
-                        value={listPrice.amount}
+                        name="listPrice"
+                        value={listPrice}
                         onChange={handleChange}
-                        required
                     />
 
-                    <label htmlFor="description">Description:</label>
+                    {/* <label htmlFor="description">Description:</label>
                     <textarea
                         id="description"
                         name="description"
@@ -121,7 +129,7 @@ export function BookEdit() {
                         type="text"
                         id="authors"
                         name="authors"
-                        value={authors.join(', ')}
+                        value={authors}
                         onChange={handleChange}
                         required
                     />
@@ -136,15 +144,15 @@ export function BookEdit() {
                         required
                     />
 
-                    <label htmlFor="categories">Categories:</label>
-                    <input
-                        type="text"
-                        id="categories"
-                        name="categories"
-                        value={categories.join(', ')}
-                        onChange={handleChange}
-                        required
-                    />
+                    <label htmlFor="categories">Category: </label>
+                    <select id="categories" name="categories" value={categories} onChange={handleChange}>
+                        <option value="">Select Category</option>
+                        <option value="Computers">Computers</option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Love">Love</option>
+                        <option value="Poetry">Poetry</option>
+                        <option value="Religion">Religion</option>
+                    </select>
 
                     <label htmlFor="isOnSale">On Sale:</label>
                     <input
@@ -153,10 +161,10 @@ export function BookEdit() {
                         name="listPrice.isOnSale"
                         checked={isOnSale}
                         onChange={handleChange}
-                    />
+                    /> */}
 
                     <div className="form-actions">
-                        <button type="submit">Save</button>
+                        <button >Save</button>
                         {/* <button type="button">Back</button> */}
                     </div>
                 </form>
