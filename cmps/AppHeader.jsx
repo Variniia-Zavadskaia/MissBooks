@@ -1,21 +1,21 @@
-export function AppHeader({ onSetPage }) {
-    const linkes = [
-        { title: 'Home', href: 'home' },
-        { title: 'About Us', href: 'about' },
-        { title: 'Books', href: 'book' },
-    ]
+const { Link, NavLink, useNavigate } = ReactRouterDOM
+
+export function AppHeader() {
+    const navigate = useNavigate()
+
+    function onBack() {
+        navigate(-1)
+    }
+
     return (
         <header className="app-header full main-layout">
             <section>
                 <h1>Miss Books</h1>
+                <button onClick={onBack}>Back</button>
                 <nav className="app-nav">
-                    {linkes.map((link, idx) => {
-                        return (
-                            <a key={idx} title={link.title} onClick={() => onSetPage(link.href)}>
-                                {link.title}
-                            </a>
-                        )
-                    })}
+                    <NavLink to="/home">Home</NavLink>
+                    <NavLink to="/about">About Us</NavLink>
+                    <NavLink to="/book">Books</NavLink>
                 </nav>
             </section>
         </header>
