@@ -28,8 +28,10 @@ export function BookEdit() {
     }
 
     function handleChange({ target }) {
-        const field = target.name
-        let value = target.value
+        const { name: field, type } = target
+        console.log(target.name)
+
+        let { value } = target
 
         switch (type) {
             case 'number':
@@ -81,14 +83,14 @@ export function BookEdit() {
             .save(bookToEdit)
             .then(book => {})
             .catch(err => {
-                console.log('Had issues with book save:', err)
+                console.log('err:', err)
             })
             .finally(() => {
                 navigate('/book')
             })
     }
     // const { title, listPrice, description, authors, publishedDate, categories, isOnSale } = bookToEdit
-     const { title, listPrice} = bookToEdit
+     const { title, amount} = bookToEdit
     // function isValidFilter() {
     //     return (
     //         title ||
@@ -111,8 +113,8 @@ export function BookEdit() {
                     <input
                         type="number"
                         id="price"
-                        name="listPrice"
-                        value={listPrice}
+                        name="price"
+                        value={amount}
                         onChange={handleChange}
                     />
 
