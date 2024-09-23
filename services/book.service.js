@@ -1,4 +1,4 @@
-import { loadFromStorage, makeId, makeLorem, getRandomIntInclusive, saveToStorage} from '../services/util.service.js'
+import { loadFromStorage, makeId, makeLorem, getRandomIntInclusive, saveToStorage } from '../services/util.service.js'
 import { storageService } from '../services/async-storage.service.js'
 
 const BOOK_KEY = 'myBookDB'
@@ -9,9 +9,9 @@ export const bookService = {
     get,
     remove,
     save,
-    createBook,
+    // createBook,
     getEmptyBook,
-    getDefaultFilter,   
+    getDefaultFilter,
 }
 
 function query(filterBy = {}) {
@@ -22,10 +22,7 @@ function query(filterBy = {}) {
 }
 
 function get(bookId) {
-    console.log(bookId);
-    
-
-    return storageService.get(BOOK_KEY, bookId)
+    return storageService.get(BOOK_KEY, bookId).then(book => _setNextPrevBookId(book))
 }
 
 function remove(bookId) {
@@ -134,4 +131,15 @@ function getEmptyBook(title = '', listPrice = { amount: 0, currencyCode: 'EUR', 
         language: 'en',
         listPrice,
     }
+}
+
+function _setNextPrevBookId(book) {
+    return query().then(books => {
+        const bookIdx = books.findIndex(currBook => currBook.id === book.id)
+        const nextBook = books[bookIdx + 1] ? books[bookIdx + 1] : books[0]
+        const prevBook = books[bookIdx - 1] ? books[bookIdx - 1] : books[books.length - 1]
+        car.nextBookId = nextBook.id
+        car.prevBookId = prevBook.id
+        return book
+    })
 }

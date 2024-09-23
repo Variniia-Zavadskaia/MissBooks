@@ -1,26 +1,28 @@
 const { useState, useEffect } = React
+const {useParams, useNavigate, Link} = ReactRouterDOM
 
 import { bookService } from '../services/book.service.js'
 import { AppLoader } from '../cmps/AppLoader.jsx'
 import { LongTxt } from "../cmps/LongTxt.jsx"
 import { LongTxtCSS } from "../cmps/LongTxtCSS.jsx"
 
-export function BookDetails({ onBack, bookId, onEdit }) {
+export function BookDetails() {
     const [book, setBook] = useState(null)
+    const params = useParams()
+    const navigate = useNavigate()
     const [features, setFeatures] = useState({ level: '', ageCategory: '', priceClass: '' })
 
     useEffect(() => {
         loadBook()
-    }, [])
+    }, [params.bookId])
 
     function loadBook() {
         bookService
-            .get(bookId)
-            .then(book => {
-                setBook(book)
-            })
+            .get(params.bookId)
+            .then(setBook)
             .catch(err => {
                 console.log('Problem getting book', err)
+                navigate('/book')
             })
     }
 
@@ -81,6 +83,10 @@ export function BookDetails({ onBack, bookId, onEdit }) {
         ev.target.src = 'assets/img/defImg.jpeg'
     }
 
+    function onBack() {
+        navigate('/book')
+    }
+
     if (!book) return <AppLoader />
 
     // const { title, thumbnail, listPrice, pageCount, publishedDate } = book
@@ -123,8 +129,12 @@ export function BookDetails({ onBack, bookId, onEdit }) {
 
             <div className="action-btns ">
                 <button onClick={onBack}>Back</button>
-                <button onClick={onEdit}>Edit</button>
+                {/* <button onClick={onEdit}>Edit</button> */}
             </div>
+            <section>
+                <button ><Link to={`/book/${book.prevBookId}`}>Prev Book</Link></button>
+                <button ><Link to={`/book/${book.nextBookId}`}>Next Book</Link></button>
+            </section>
         </section>
     )
 }

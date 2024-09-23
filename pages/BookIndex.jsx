@@ -1,17 +1,18 @@
 const { useState, useEffect } = React
+const { Link } = ReactRouterDOM
 
 import { bookService } from '../services/book.service.js'
 import { BookList } from '../cmps/BookList.jsx'
 import { BookDetails } from '../pages/BookDetails.jsx'
 import { BookFilter } from '../cmps/BookFilter.jsx'
-import { BookEdit } from './BookEdit.jsx'
+// import { BookEdit } from './BookEdit.jsx'
 import { AppLoader } from '../cmps/AppLoader.jsx'
-import { BookAdd } from '../cmps/BookAdd.jsx'
+// import { BookAdd } from '../cmps/BookAdd.jsx'
 
 export function BookIndex() {
     const [books, setBooks] = useState(null)
-    const [isEdit, setIsEdit] = useState(false)
-    const [selectedBookId, setSelectedBookId] = useState(null)
+    // const [isEdit, setIsEdit] = useState(false)
+    // const [selectedBookId, setSelectedBookId] = useState(null)
     const [filterBy, setFilterBy] = useState(bookService.getDefaultFilter())
 
     useEffect(() => {
@@ -21,7 +22,7 @@ export function BookIndex() {
     function loadBooks() {
         bookService
             .query(filterBy)
-            .then(books => setBooks(books))
+            .then(setBooks)
             .catch(err => {
                 console.log('Problems getting books:', err)
             })
@@ -38,38 +39,38 @@ export function BookIndex() {
             })
     }
 
-    function onAddBook(bookToAdd) {
-        console.log('new book')
+    // function onAddBook(bookToAdd) {
+    //     console.log('new book')
 
-        // ev.preventDefault()
-        bookService
-            .save(bookToAdd)
-            .then(savedBook => {
-                setBooks([savedBook, ...books])
-                setIsEdit(false)
-            })
-            .catch(err => {
-                console.error('Failed to save book', err)
-                // TODO: show error msg to user
-            })
-    }
+    //     // ev.preventDefault()
+    //     bookService
+    //         .save(bookToAdd)
+    //         .then(savedBook => {
+    //             setBooks([savedBook, ...books])
+    //             setIsEdit(false)
+    //         })
+    //         .catch(err => {
+    //             console.error('Failed to save book', err)
+    //             // TODO: show error msg to user
+    //         })
+    // }
 
-    function onSaveBook(bookToSave) {
-        bookService
-            .save(bookToSave)
-            .then(() => {
-                setIsEdit(false)
-                setSelectedBookId(null)
-                loadBooks()
-            })
-            .catch(err => {
-                console.log('Had issues with book save:', err)
-            })
-    }
+    // function onSaveBook(bookToSave) {
+    //     bookService
+    //         .save(bookToSave)
+    //         .then(() => {
+    //             setIsEdit(false)
+    //             setSelectedBookId(null)
+    //             loadBooks()
+    //         })
+    //         .catch(err => {
+    //             console.log('Had issues with book save:', err)
+    //         })
+    // }
 
-    function onSelectedBookId(bookId) {
-        setSelectedBookId(bookId)
-    }
+    // function onSelectedBookId(bookId) {
+    //     setSelectedBookId(bookId)
+    // }
 
     function onSetFilterBy(filterBy) {
         setFilterBy({ ...filterBy })
@@ -78,7 +79,12 @@ export function BookIndex() {
     if (!books) return <AppLoader />
     return (
         <section className="book-index">
-            {selectedBookId ? (
+            <BookFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
+            <section>
+                <Link to="/book/edit">Add Book</Link>
+            </section>
+            <BookList books={books} onRemoveBook={onRemoveBook} />
+            {/* {selectedBookId ? (
                 isEdit ? (
                     <BookEdit
                         bookId={selectedBookId}
@@ -99,7 +105,7 @@ export function BookIndex() {
                     <BookAdd onAddBook={onAddBook} />
                     <BookList books={books} onSelectedBookId={onSelectedBookId} onRemoveBook={onRemoveBook} />
                 </React.Fragment>
-            )}
+            )} */}
         </section>
     )
 }
