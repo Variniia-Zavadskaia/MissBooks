@@ -17,6 +17,10 @@
     /* margin: auto; */
 }
 
+.book-card{
+    display: flex;
+}
+
 .price-red {
     color: red;
 }

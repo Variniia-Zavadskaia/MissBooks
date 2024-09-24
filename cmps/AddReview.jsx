@@ -11,26 +11,26 @@ export function AddReview({ bookId, onAddReview }) {
 
         let { value } = target
 
-        // switch (type) {
-        //     case 'number':
-        //     case 'range':
-        //         value = +value
-        //         break
+        switch (type) {
+            case 'number':
+            case 'range':
+                value = +value
+                break
 
-        //     case 'checkbox':
-        //         value = target.checked
-        //         break
-        // }
+            case 'checkbox':
+                value = target.checked
+                break
+        }
         setReview(prevReview => ({ ...prevReview, [field]: value }))
     }
 
-    function handleChangeRating(event) {
-        const { name, value } = event.target;
-        setReview(prevReview => ({
-            ...prevReview,
-            [name]: value,
-        }));
-    }
+    // function handleChangeRating(event) {
+    //     const { name, value } = event.target;
+    //     setReview(prevReview => ({
+    //         ...prevReview,
+    //         [name]: value,
+    //     }));
+    // }
     
 
     function onSubmit(ev) {
@@ -45,8 +45,9 @@ export function AddReview({ bookId, onAddReview }) {
         <section className="add-review">
             {/* <h3>Add Review</h3> */}
             <form onSubmit={onSubmit}>
-                <label>
-                    Full Name:
+                
+                <label htmlFor="fullname">Full Name:</label>
+                   
                     <input
                         type="text"
                         name="fullname"
@@ -55,25 +56,24 @@ export function AddReview({ bookId, onAddReview }) {
                         placeholder="Enter your full name"
                         required
                     />
-                </label>
+               
 
-                <label>
-                    Rating:
-                    <select name="rating" value={review.rating} onChange={handleChangeRating}>
+               <label htmlFor="rating">Rating:</label>
+                    
+                    <select name="rating" value={review.rating} onChange={handleChange}>
                         <option value={1}>★</option>
                         <option value={2}>★★</option>
                         <option value={3}>★★★</option>
                         <option value={4}>★★★★</option>
                         <option value={5}>★★★★★</option>
                     </select>
-                </label>
+               
 
-                <label>
-                    Read At:
+                    <label htmlFor="readAt"> Read At:</label>
                     <input type="date" name="readAt" value={review.readAt} onChange={handleChange} required />
-                </label>
+                
 
-                <button type="submit">Submit Review</button>
+                <button type="submit">Submit </button>
             </form>
         </section>
     )

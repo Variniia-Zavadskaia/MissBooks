@@ -1,0 +1,14 @@
+.add-review {
+    /* background-color: var(--clr2bg); */
+    padding-inline: 1em;
+}
+
+.add-review form {
+    display: grid;
+    grid-template-columns: 100px 200px;
+    gap: .5em;
+}
+
+/* .add-review button {
+   margin-left: 200px;
+} */
