@@ -5,6 +5,7 @@ import { bookService } from '../services/book.service.js'
 import { AppLoader } from '../cmps/AppLoader.jsx'
 import { LongTxt } from "../cmps/LongTxt.jsx"
 import { LongTxtCSS } from "../cmps/LongTxtCSS.jsx"
+import { AddReview } from '../cmps/AddReview.jsx'
 
 export function BookDetails() {
     const [book, setBook] = useState(null)
@@ -77,6 +78,17 @@ export function BookDetails() {
             NZD: 'NZ$',
         }
         return currencySymbols[currencyCode] || currencyCode // Fallback to currency code if symbol is not found
+    }
+
+    function onAddReview(bookId, review) {
+        bookService.addReview(bookId, review)
+        .then(updatedBook => setBook(updatedBook)) // Update state with the new review
+        .catch(err => console.error('Error adding review:', err))
+        showErrorMsg(`Failed to add review. Please try again`)
+    }
+
+    function onDeleteReview(params) {
+        
     }
 
     function getDefaultUrl(ev) {

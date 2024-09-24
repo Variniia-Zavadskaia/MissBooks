@@ -45,38 +45,7 @@ export function BookEdit() {
         }
         setBookToEdit(prevBook => ({ ...prevBook, [field]: value }))
     }
-    //     setBookToEdit(prevBook => {
-    //         if (field.startsWith('listPrice')) {
-    //             const updatedField = field.split('.')[1]
-    //             return {
-    //                 ...prevBook,
-    //                 listPrice: {
-    //                     ...prevBook.listPrice,
-    //                     [updatedField]: value,
-    //                 },
-    //             }
-    //         }
-
-    //         return {
-    //             ...prevBook,
-    //             [field]: value,
-    //         }
-    //     })
-    // }
-
-    // function onSubmit(ev) {
-    //     ev.preventDefault()
-
-    //     console.log(ev.target.checkValidity())
-
-    //     //  console.log(Object.fromEntries(new FormData(ev.target)))
-    //     onSaveBook(bookToEdit)
-    // }
-
-    // function evStop(ev) {
-    //     ev.stopPropagation()
-    // }
-
+ 
     function onSaveBook(ev) {
         ev.preventDefault()
         bookService

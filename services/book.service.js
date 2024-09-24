@@ -10,8 +10,10 @@ export const bookService = {
     remove,
     save,
     createBook,
+    addReview,
     getEmptyBook,
     getDefaultFilter,
+    getEmptyReview
 }
 
 function query(filterBy = {}) {
@@ -34,6 +36,22 @@ function save(book) {
         return storageService.put(BOOK_KEY, book)
     } else {
         return storageService.post(BOOK_KEY, book)
+    }
+}
+
+function addReview(bookId, review) {
+    return storageService.get(BOOK_KEY, bookId).then(book => {
+        if (!book.reviews) book.reviews = []
+        book.reviews.push(review)
+        return save(book)
+    })
+}
+
+function getEmptyReview() {
+    return {
+        fullname: '',
+        rating: 1,
+        readAt: new Date().toISOString().slice(0, 10),
     }
 }
 
