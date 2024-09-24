@@ -11,17 +11,17 @@ export function AddReview({ bookId, onAddReview }) {
 
         let { value } = target
 
-        switch (type) {
-            case 'number':
-            case 'range':
-                value = +value
-                break
+        // switch (type) {
+        //     case 'number':
+        //     case 'range':
+        //         value = +value
+        //         break
 
-            case 'checkbox':
-                value = target.checked
-                break
-        }
-        setReview(prevBook => ({ ...prevBook, [field]: value }))
+        //     case 'checkbox':
+        //         value = target.checked
+        //         break
+        // }
+        setReview(prevReview => ({ ...prevReview, [field]: value }))
     }
 
     function onSubmit(ev) {
@@ -30,14 +30,15 @@ export function AddReview({ bookId, onAddReview }) {
             showErrorMsg(`'Fullname is required!'`)
         }
         onAddReview(bookId, review)
-            .then(() => {
-                setReview({ fullname: '', rating: 1, readAt: '' })
-                showSuccessMsg(`Review added successfully!`)
-            })
-            .catch(err => {
-                console.log('Problems adding review:', err)
-                showErrorMsg(`Failed to add review. Please try again`)
-            })
+        setReview({ fullname: '', rating: 1, readAt: '' })
+            // .then(() => {
+            //     setReview({ fullname: '', rating: 1, readAt: '' })
+            //     showSuccessMsg(`Review added successfully!`)
+            // })
+            // .catch(err => {
+            //     console.log('Problems adding review:', err)
+            //     showErrorMsg(`Failed to add review. Please try again`)
+            // })
     }
     return (
         <section className="add-review">

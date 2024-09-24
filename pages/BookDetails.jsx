@@ -1,10 +1,10 @@
 const { useState, useEffect } = React
-const {useParams, useNavigate, Link} = ReactRouterDOM
+const { useParams, useNavigate, Link } = ReactRouterDOM
 
 import { bookService } from '../services/book.service.js'
 import { AppLoader } from '../cmps/AppLoader.jsx'
-import { LongTxt } from "../cmps/LongTxt.jsx"
-import { LongTxtCSS } from "../cmps/LongTxtCSS.jsx"
+import { LongTxt } from '../cmps/LongTxt.jsx'
+import { LongTxtCSS } from '../cmps/LongTxtCSS.jsx'
 import { AddReview } from '../cmps/AddReview.jsx'
 
 export function BookDetails() {
@@ -81,25 +81,26 @@ export function BookDetails() {
     }
 
     function onAddReview(bookId, review) {
-        bookService.addReview(bookId, review)
-        .then(updatedBook => setBook(updatedBook)) // Update state with the new review
-        .catch(err => console.error('Error adding review:', err))
-        showErrorMsg(`Failed to add review. Please try again`)
+        bookService
+            .addReview(bookId, review)
+            .then(updatedBook => setBook(updatedBook)) // Update state with the new review
+            .catch(err => console.error('Error adding review:', err))
+        // showErrorMsg(`Failed to add review. Please try again`)
     }
 
     function onDeleteReview(reviewIdx) {
-        const updatedReviews = book.reviews.filter((_,idx) =>idx !==reviewIdx)
-        const updatedBook = {...book, reviews:updatedReviews}
+        const updatedReviews = book.reviews.filter((_, idx) => idx !== reviewIdx)
+        const updatedBook = { ...book, reviews: updatedReviews }
         bookService
-        .remove(bookId)
-        .then(() => {
-            setBooks(books => books.filter(book => book.id !== bookId))
-            showSuccessMsg(`Car removed successfully!`)
-        })
-        .catch(err => {
-            console.log('Problems removing book:', err)
-            showErrorMsg(`Problems removing car (${carId})`)
-        })
+            .remove(bookId)
+            .then(() => {
+                setBooks(books => books.filter(book => book.id !== bookId))
+                showSuccessMsg(`Car removed successfully!`)
+            })
+            .catch(err => {
+                console.log('Problems removing book:', err)
+                showErrorMsg(`Problems removing car (${carId})`)
+            })
     }
 
     function getDefaultUrl(ev) {
@@ -117,13 +118,17 @@ export function BookDetails() {
     // const bookAgeCategory = getBookAgeCategory(publishedDate)
     // const priceClass = getPriceClass(listPrice.amount)
 
-    
     return (
         <section className="book-details">
             <div className="book-header">
                 <h2 className="book-title">{book.title}</h2>
                 {book.subtitle && <h3 className="book-subtitle">{book.subtitle}</h3>}
-                <img className="book-thumbnail" src={`${book.thumbnail} `} onError={getDefaultUrl} alt={`${book.title} cover`} />
+                <img
+                    className="book-thumbnail"
+                    src={`${book.thumbnail} `}
+                    onError={getDefaultUrl}
+                    alt={`${book.title} cover`}
+                />
             </div>
             <div className="book-info">
                 <p>
@@ -150,14 +155,23 @@ export function BookDetails() {
                 {book.isOnSale && <p className="on-sale">On Sale!</p>}
             </div>
 
+
             <div className="action-btns ">
                 <button onClick={onBack}>Back</button>
                 {/* <button onClick={onEdit}>Edit</button> */}
             </div>
             <section>
-                <button ><Link to={`/book/${book.prevBookId}`}>Prev Book</Link></button>
-                <button ><Link to={`/book/${book.nextBookId}`}>Next Book</Link></button>
+                <button>
+                    <Link to={`/book/${book.prevBookId}`}>Prev Book</Link>
+                </button>
+                <button>
+                    <Link to={`/book/${book.nextBookId}`}>Next Book</Link>
+                </button>
             </section>
+            <div className="add-review">
+                <AddReview bookId={params.bookId} onAddReview={onAddReview}/>
+                
+            </div>
         </section>
     )
 }
