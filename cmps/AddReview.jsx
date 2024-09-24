@@ -24,6 +24,15 @@ export function AddReview({ bookId, onAddReview }) {
         setReview(prevReview => ({ ...prevReview, [field]: value }))
     }
 
+    function handleChangeRating(event) {
+        const { name, value } = event.target;
+        setReview(prevReview => ({
+            ...prevReview,
+            [name]: value,
+        }));
+    }
+    
+
     function onSubmit(ev) {
         ev.preventDefault(ev)
         if (!review.fullname) {
@@ -31,18 +40,10 @@ export function AddReview({ bookId, onAddReview }) {
         }
         onAddReview(bookId, review)
         setReview({ fullname: '', rating: 1, readAt: '' })
-            // .then(() => {
-            //     setReview({ fullname: '', rating: 1, readAt: '' })
-            //     showSuccessMsg(`Review added successfully!`)
-            // })
-            // .catch(err => {
-            //     console.log('Problems adding review:', err)
-            //     showErrorMsg(`Failed to add review. Please try again`)
-            // })
     }
     return (
         <section className="add-review">
-            <h3>Add Review</h3>
+            {/* <h3>Add Review</h3> */}
             <form onSubmit={onSubmit}>
                 <label>
                     Full Name:
@@ -58,12 +59,12 @@ export function AddReview({ bookId, onAddReview }) {
 
                 <label>
                     Rating:
-                    <select name="rating" value={review.rating} onChange={handleChange}>
-                        <option value={1}>1 Star</option>
-                        <option value={2}>2 Stars</option>
-                        <option value={3}>3 Stars</option>
-                        <option value={4}>4 Stars</option>
-                        <option value={5}>5 Stars</option>
+                    <select name="rating" value={review.rating} onChange={handleChangeRating}>
+                        <option value={1}>★</option>
+                        <option value={2}>★★</option>
+                        <option value={3}>★★★</option>
+                        <option value={4}>★★★★</option>
+                        <option value={5}>★★★★★</option>
                     </select>
                 </label>
 

@@ -23,6 +23,7 @@ export function BookDetails() {
             .then(setBook)
             .catch(err => {
                 console.log('Problem getting book', err)
+                showErrorMsg('Could not load book. Please try again.')
                 navigate('/book')
             })
     }
@@ -83,23 +84,29 @@ export function BookDetails() {
     function onAddReview(bookId, review) {
         bookService
             .addReview(bookId, review)
-            .then(updatedBook => setBook(updatedBook)) // Update state with the new review
-            .catch(err => console.error('Error adding review:', err))
-        // showErrorMsg(`Failed to add review. Please try again`)
+            .then(updatedBook => {
+                setBook(updatedBook)
+                showSuccessMsg(`Review added successfully!`)
+            })
+            .catch(err => {
+                console.error('Error adding review:', err)
+
+                showErrorMsg(`Failed to add review. Please try again`)
+            })
     }
 
     function onDeleteReview(reviewIdx) {
         const updatedReviews = book.reviews.filter((_, idx) => idx !== reviewIdx)
         const updatedBook = { ...book, reviews: updatedReviews }
         bookService
-            .remove(bookId)
+            .save(updatedBook)
             .then(() => {
-                setBooks(books => books.filter(book => book.id !== bookId))
-                showSuccessMsg(`Car removed successfully!`)
-            })
+                setBook(updatedBook)
+                showSuccessMsg(`Review removed successfully!`)
+            }) // Update state after deletion
             .catch(err => {
-                console.log('Problems removing book:', err)
-                showErrorMsg(`Problems removing car (${carId})`)
+                console.error('Error deleting review:', err)
+                showErrorMsg(`Problems removing review (${reviewIdx})`)
             })
     }
 
@@ -155,7 +162,6 @@ export function BookDetails() {
                 {book.isOnSale && <p className="on-sale">On Sale!</p>}
             </div>
 
-
             <div className="action-btns ">
                 <button onClick={onBack}>Back</button>
                 {/* <button onClick={onEdit}>Edit</button> */}
@@ -169,8 +175,22 @@ export function BookDetails() {
                 </button>
             </section>
             <div className="add-review">
-                <AddReview bookId={params.bookId} onAddReview={onAddReview}/>
-                
+                <h3>Reviews</h3>
+                <AddReview bookId={book.id} onAddReview={onAddReview} />
+                {book.reviews && book.reviews.length > 0 ? (
+                    <ul>
+                        {book.reviews.map((review, idx) => (
+                            <li key={idx}>
+                                <p>
+                                    <strong>{review.fullname}</strong> rated {review.rating} stars on {review.readAt}
+                                </p>
+                                <button onClick={() => onDeleteReview(idx)}>Delete Review</button>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No reviews yet.</p>
+                )}
             </div>
         </section>
     )
