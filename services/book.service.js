@@ -9,7 +9,6 @@ export const bookService = {
     get,
     remove,
     save,
-    createBook,
     addReview,
     getEmptyBook,
     getDefaultFilter,
@@ -76,10 +75,6 @@ function _getFilteredBooks(books, filterBy) {
     return books
 }
 
-// function getEmptyBook(title = '', listPrice = '') {
-//     return {title, listPrice }
-// }
-
 function getDefaultFilter() {
     return {
         title: '',
@@ -119,23 +114,7 @@ function _createBooks() {
     console.log('books', books)
 }
 
-// function createBook(title, listPrice) {
-//     const book = getEmptyBook(title, listPrice)
-//     book.id = makeId()
-//     return book
-// }
-
-function createBook(title, amount = 100, currencyCode = 'EUR', isOnSale = false) {
-    const book = getEmptyBook(title, {
-        amount,
-        currencyCode,
-        isOnSale,
-    })
-    book.id = makeId()
-    return book
-}
-
-function getEmptyBook(title = '', listPrice = { amount: 0, currencyCode: 'EUR', isOnSale: false }) {
+function getEmptyBook(title = '', listPrice = { amount: '', currencyCode: 'EUR', isOnSale: false }) {
     return {
         id: '',
         title,
@@ -161,3 +140,23 @@ function _setNextPrevBookId(book) {
         return book
     })
 }
+// function getEmptyBook(title = '', listPrice = '') {
+//     return {title, listPrice }
+// }
+
+// function createBook(title, amount = 100, currencyCode = 'EUR', isOnSale = false) {
+//     const book = getEmptyBook(title, {
+//         amount,
+//         currencyCode,
+//         isOnSale,
+//     })
+//     book.id = makeId()
+//     return book
+// }
+
+// function createBook(title, listPrice) {
+//     const book = getEmptyBook(title, listPrice)
+//     book.id = makeId()
+//     return book
+// }
+

@@ -87,8 +87,19 @@ export function BookDetails() {
         showErrorMsg(`Failed to add review. Please try again`)
     }
 
-    function onDeleteReview(params) {
-        
+    function onDeleteReview(reviewIdx) {
+        const updatedReviews = book.reviews.filter((_,idx) =>idx !==reviewIdx)
+        const updatedBook = {...book, reviews:updatedReviews}
+        bookService
+        .remove(bookId)
+        .then(() => {
+            setBooks(books => books.filter(book => book.id !== bookId))
+            showSuccessMsg(`Car removed successfully!`)
+        })
+        .catch(err => {
+            console.log('Problems removing book:', err)
+            showErrorMsg(`Problems removing car (${carId})`)
+        })
     }
 
     function getDefaultUrl(ev) {

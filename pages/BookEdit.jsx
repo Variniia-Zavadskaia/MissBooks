@@ -43,9 +43,18 @@ export function BookEdit() {
                 value = target.checked
                 break
         }
-        setBookToEdit(prevBook => ({ ...prevBook, [field]: value }))
+        console.log(value)
+
+        if (field === 'listPrice') {
+            setBookToEdit(prevBook => ({
+                ...prevBook,
+                listPrice: { ...prevBook.listPrice, amount: value },
+            }))
+        } else {
+            setBookToEdit(prevBook => ({ ...prevBook, [field]: value }))
+        }
     }
- 
+
     function onSaveBook(ev) {
         ev.preventDefault()
         bookService
@@ -59,7 +68,7 @@ export function BookEdit() {
             })
     }
     // const { title, listPrice, description, authors, publishedDate, categories, isOnSale } = bookToEdit
-     const { title, amount} = bookToEdit
+    const { title, listPrice } = bookToEdit
     // function isValidFilter() {
     //     return (
     //         title ||
@@ -79,13 +88,7 @@ export function BookEdit() {
                     <input type="text" id="title" name="title" value={title} onChange={handleChange} />
 
                     <label htmlFor="price">Price:</label>
-                    <input
-                        type="number"
-                        id="price"
-                        name="price"
-                        value={amount}
-                        onChange={handleChange}
-                    />
+                    <input type="number" id="price" name="listPrice" value={listPrice.amount} onChange={handleChange} />
 
                     {/* <label htmlFor="description">Description:</label>
                     <textarea
@@ -135,7 +138,7 @@ export function BookEdit() {
                     /> */}
 
                     <div className="form-actions">
-                        <button >Save</button>
+                        <button>Save</button>
                         {/* <button type="button">Back</button> */}
                     </div>
                 </form>
