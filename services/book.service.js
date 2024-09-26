@@ -115,7 +115,7 @@ function _createBooks() {
     console.log('books', books)
 }
 
-function getEmptyBook(title = '', listPrice = { amount: '', currencyCode: 'EUR', isOnSale: false }) {
+function getEmptyBook(title = '', listPrice = { amount: '', currencyCode: 'EUR', isOnSale: ''}) {
     return {
         id: '',
         title,
