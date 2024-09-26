@@ -40,14 +40,15 @@
     color: black; /* Default color */
 }
 
-/* .on-sale-sign {
-    color: red;
-    font-weight: bold;
-    font-size: 1.2em;
-} */
-
 .brake-line {
     height: 2px;
     background: black;
     width: 100%;
+}
+
+.close {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    background: rgb(220, 206, 206);
 }

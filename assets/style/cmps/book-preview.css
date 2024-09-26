@@ -18,3 +18,13 @@
 p {
     margin-top: 10px;
 }
+
+.on-sale-icon {
+    position: absolute;
+    width: 100px;
+    top: 5%;
+    left: 5%;
+    transform: rotate(-30deg);
+    right: 0px;
+    bottom: 0px;
+}
