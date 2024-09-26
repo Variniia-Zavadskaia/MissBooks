@@ -2,15 +2,16 @@ const { useState, useEffect } = React
 const { useParams, useNavigate, Link } = ReactRouterDOM
 
 import { bookService } from '../services/book.service.js'
-import { AppLoader } from '../cmps/AppLoader.jsx'
 import { LongTxt } from '../cmps/LongTxt.jsx'
 import { AddReview } from '../cmps/AddReview.jsx'
+import { AppLoader } from '../cmps/AppLoader.jsx'
 
 export function BookDetails() {
     const [book, setBook] = useState(null)
+    const [features, setFeatures] = useState({ level: '', ageCategory: '', priceClass: '' })
+
     const params = useParams()
     const navigate = useNavigate()
-    const [features, setFeatures] = useState({ level: '', ageCategory: '', priceClass: '' })
 
     useEffect(() => {
         loadBook()
@@ -58,8 +59,8 @@ export function BookDetails() {
     }
 
     const getPriceClass = amount => {
-        if (amount > 150) return 'price-red'
-        if (amount < 20) return 'price-green'
+        if (amount > 200) return 'price-red'
+        if (amount < 50) return 'price-green'
         return 'price-normal'
     }
 
@@ -119,82 +120,89 @@ export function BookDetails() {
 
     if (!book) return <AppLoader />
 
-    // const { title, thumbnail, listPrice, pageCount, publishedDate } = book
-    // const readingCategory = getReadingCategory(pageCount)
-    // const bookAgeCategory = getBookAgeCategory(publishedDate)
-    // const priceClass = getPriceClass(listPrice.amount)
-
     return (
-        <section className="book-details">
-            <div className='book-card'>
-                <div>
-                    <div className="book-header">
-                        <h2 className="book-title">{book.title}</h2>
-                        {book.subtitle && <h3 className="book-subtitle">{book.subtitle}</h3>}
-                        <img
-                            className="book-thumbnail"
-                            src={`${book.thumbnail} `}
-                            onError={getDefaultUrl}
-                            alt={`${book.title} cover`}
-                        />
-                    </div>
-                    <div className="book-info">
-                        <p>
-                            <span className="bold">Authors:</span> {book.authors.join(', ')}
-                        </p>
-                        <p>
-                            <span className="bold">Published:</span> {book.publishedDate} {features.ageCategory}
-                        </p>
-                        <p>
-                            <span className="bold">Page Count:</span> {book.pageCount} {features.level}
-                        </p>
-                        <p>
-                            <span className="bold">Categories: </span>
-                            {book.categories.join(', ')}
-                        </p>
+        <article className="book-details">
+            <nav className="book-details-nav">
+                <Link to={`/book/${book.prevBookId}`}>
+                    <button>
+                        <i className="fa-solid fa-arrow-left"></i>
+                    </button>
+                </Link>
+                <Link to={`/book/${book.nextBookId}`}>
+                    <button>
+                        <i className="fa-solid fa-arrow-right"></i>
+                    </button>
+                </Link>
+            </nav>
 
-                        <LongTxt txt={book.description} />
-                    </div>
-                    <div className={`book-price ${features.priceClass}`}>
-                        <p>
-                            Price: {book.listPrice.amount} {getCurrencySymbol(book.listPrice.currencyCode)}
-                        </p>
-                        {book.isOnSale && <p className="on-sale">On Sale!</p>}
-                    </div>
-                </div>
+            <h2 className="book-title">{book.title}</h2>
+            {/* {book.subtitle && <h3 className="book-subtitle">{book.subtitle}</h3>} */}
+            {/* <span className="bold">Published: {book.publishedDate} {features.ageCategory}</span> */}
+            <span className="bold">{features.ageCategory}</span>
+            {/* <span className="bold">Page Count: {book.pageCount} {features.level}</span>  */}
+            <h4 className="bold">{features.level}</h4>
+            <img
+                className="book-thumbnail"
+                src={`${book.thumbnail} `}
+                onError={getDefaultUrl}
+                alt={`${book.title} cover`}
+            />
 
-                <div className="add-review">
-                    <h3>Reviews</h3>
-                    <AddReview bookId={book.id} onAddReview={onAddReview} />
-                    {book.reviews && book.reviews.length > 0 ? (
-                        <ul>
-                            {book.reviews.map((review, idx) => (
-                                <li key={idx}>
-                                    <p>
-                                        <strong>{review.fullname}</strong> rated {review.rating} stars on{' '}
-                                        {review.readAt}
-                                    </p>
-                                    <button onClick={() => onDeleteReview(idx)}>Delete Review</button>
-                                </li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p>No reviews yet.</p>
-                    )}
-                </div>
-            </div>
-            <div className="action-btns ">
-                <button onClick={onBack}>Back</button>
+            <p className={`book-price ${features.priceClass}`}>
+                <span className="bold-txt">Price: </span> {book.listPrice.amount}{' '}
+                {getCurrencySymbol(book.listPrice.currencyCode)}
+            </p>
+
+            <p>
+                <span className="bold-txt">Language:</span>
+                {book.language}
+            </p>
+
+            {book.categories && (
+                <p>
+                    <span className="bold-txt">Categoric:</span> {book.categories}
+                </p>
+            )}
+            {book.authors && (
+                <p>
+                    <span className="bold-txt">Authors:</span> {book.authors}
+                </p>
+            )}
+
+            {book.description && <LongTxt txt={book.description} />}
+            {book.listPrice.isOnSale && (
+                <img className="on-sale-icon" src="/assets/booksImages/onSale.png.png" alt="" />
+            )}
+              <button className='close'>
+                <Link to='/book'>
+                    X
+                </Link>
+            </button>
+             {/* <div className="action-btns ">
+                <button onClick={onBack}>Back</button> */}
                 {/* <button onClick={onEdit}>Edit</button> */}
+            {/* </div> */}
+            <div className='brake-line'></div>
+            <div className="add-review">
+                <h3>Reviews</h3>
+                <AddReview bookId={book.id} onAddReview={onAddReview} />
+                {book.reviews && book.reviews.length > 0 ? (
+                    <ul>
+                        {book.reviews.map((review, idx) => (
+                            <li key={idx}>
+                                <p>
+                                    <strong>{review.fullname}</strong> rated {review.rating} stars on {review.readAt}
+                                </p>
+                                <button onClick={() => onDeleteReview(idx)}>Delete Review</button>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No reviews yet.</p>
+                )}
             </div>
-            <section>
-                <button>
-                    <Link to={`/book/${book.prevBookId}`}>Prev Book</Link>
-                </button>
-                <button>
-                    <Link to={`/book/${book.nextBookId}`}>Next Book</Link>
-                </button>
-            </section>
-        </section>
+
+           
+        </article>
     )
 }

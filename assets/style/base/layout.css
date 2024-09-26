@@ -1,12 +1,20 @@
-/* .main-layout {
-  margin: 0 auto;
-  padding-left: 1.6rem;
-  padding-right: 1.6rem;
-} */
+.wrapper {
+    --max-width: 980px;
+    --min-margin: 1em;
+
+    width: min(var(--max-width), 100% - 2 * var(--min-margin));
+    margin-inline: auto;
+}
 
 .main-layout {
+    --max-width: 980px;
+    --min-margin: 1em;
+
     display: grid;
-    grid-template-columns: 1.6rem 1fr 1.6rem;
+    grid-template-columns: 
+        minmax(var(--min-margin), 1fr)
+        minmax(auto, var(--max-width))
+        minmax(var(--min-margin), 1fr);
 }
 .main-layout > * {
     grid-column: 2;
