@@ -4,7 +4,6 @@ const { useParams, useNavigate, Link } = ReactRouterDOM
 import { bookService } from '../services/book.service.js'
 import { AppLoader } from '../cmps/AppLoader.jsx'
 import { LongTxt } from '../cmps/LongTxt.jsx'
-import { LongTxtCSS } from '../cmps/LongTxtCSS.jsx'
 import { AddReview } from '../cmps/AddReview.jsx'
 
 export function BookDetails() {
@@ -155,7 +154,6 @@ export function BookDetails() {
                         </p>
 
                         <LongTxt txt={book.description} />
-                        <LongTxtCSS txt={book.description} length={50} />
                     </div>
                     <div className={`book-price ${features.priceClass}`}>
                         <p>
